@@ -1,5 +1,6 @@
 #! /usr/bin/python
 
+# Allowing Python to access folders in your OS
 import os
 
 # We get the desired folder path
@@ -7,24 +8,29 @@ folder = r"C:\Users\Public"
 
 # We store the contents of the folder in a variable
 folder_contents = os.listdir(folder)
-folder_length = len(folder_contents)
+folder_list = len(folder_contents)
+
 # Iterate through the folder contents and create a new list of only files we'll change
+# Or...Iterate through list while making changes in real-time
+
 nameChangeList = []
 def findFiles():
-    for item in range(folder_length):
+    for item in range(folder_list):
         item = folder_contents[item]
         file_path = os.path.join(folder,item)
         fileName, fileExtension = os.path.splitext(file_path)
         if fileExtension == '.txt':
-            print item
             try:
-                float(item[:2])
-                print True
+                float(item[:3])
+                newName = item[3:]
+                print newName
+                os.rename(item, newName)
             except ValueError:
                 print False
+                print fileName
+                print item
         #print fileExtension
     
-    print nameChangeList
 
 def nameChange(file):
     newName = ""
@@ -34,4 +40,3 @@ def nameChange(file):
     
 findFiles()
 #os.rename(r"C:\Users\Public\testdoc.txt", r"C:\Users\Public\easyAsPython.txt")
-
