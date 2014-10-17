@@ -1,7 +1,13 @@
+'''
+Created on Oct 17, 2014
+
+@author: amagoon
+'''
 #! /usr/bin/python
 
 # Allowing Python to access folders in your OS
 import timing
+import Tkinter as tk
 import os, sys
 from stat import *
 
@@ -43,27 +49,20 @@ def findFiles(top, callback):
         else:
             # Unknown file type, print a message
             print 'Skipping %s' % pathname
-
-#def nameChange(pathname):
-
-def walktree(top, callback):
-    '''recursively descend the directory tree rooted at top,
-       calling the callback function for each regular file'''
-
-    for f in os.listdir(top):
-        pathname = os.path.join(top, f)
-        mode = os.stat(pathname)[ST_MODE]
-        if S_ISDIR(mode):
-            # It's a directory, recurse into it
-            walktree(pathname, callback)
-        elif S_ISREG(mode):
-            # It's a file, call the callback function
-            callback(pathname)
-        else:
-            # Unknown file type, print a message
-            print 'Skipping %s' % pathname
     
     
-#findFiles()
 findFiles(folder, changeName)
 #os.rename(r"C:\Users\Public\testdoc.txt", r"C:\Users\Public\easyAsPython.txt")
+
+class Application(tk.Frame):
+    def __init__(self, master=None):
+        tk.Frame.__init__(self, master)  
+        self.grid()                    
+        self.createWidgets()
+    def createWidgets(self):
+        self.quitButton = tk.Button(self, text='Abandon Ship',command=self.quit)            
+        self.quitButton.grid()
+       
+app = Application()          
+app.master.title('Prefix Exterminator')   
+app.mainloop()
