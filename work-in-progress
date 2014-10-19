@@ -5,30 +5,19 @@ Created on Oct 17, 2014
 '''
 #! /usr/bin/python
 
-# Allowing Python to access folders in your OS
 import timing
 import Tkinter as tk
 import os, sys
 from stat import *
 
-# We get the desired folder path
-folder = r"C:\Users\Public\Mynewfolder"
-
-# We store the contents of the folder in a variable
-folder_contents = os.listdir(folder)
-folder_length = len(folder_contents)
 
 # Iterate through the folder contents and create a new list of only files we'll change
-# Or...Iterate through list while making changes in real-time
-
-
 def changeName(pathname):
     head, tail = os.path.split(pathname)
     try:
         float(tail[:3])
-        newName = tail[3:]
-        newCompleteName = os.path.join(head,newName)
-        os.rename(pathname, newCompleteName)
+        newName = os.path.join(head,tail[3:])
+        os.rename(pathname, newName)
     except ValueError:
         print False
 
@@ -39,25 +28,28 @@ def findFiles(top, callback):
         mode = os.stat(pathname)[ST_MODE]
         if S_ISDIR(mode):
             # It's a directory, recurse into it
-            print pathname, "This is a directory"
             findFiles(pathname, callback)
         elif S_ISREG(mode):
             # It's a file, call the callback function
-            print pathname, "This is a file"
             if fileExtension == '.txt':
                 callback(pathname)
         else:
             # Unknown file type, print a message
             print 'Skipping %s' % pathname
     
-    
+# We get the desired folder path
+folder = r"C:\Users\Public\Mynewfolder"
+
+# We store the contents of the folder in a variable
+folder_contents = os.listdir(folder)
+folder_length = len(folder_contents)
 findFiles(folder, changeName)
 #os.rename(r"C:\Users\Public\testdoc.txt", r"C:\Users\Public\easyAsPython.txt")
 
 class Application(tk.Frame):
     def __init__(self, master=None):
         tk.Frame.__init__(self, master)  
-        self.grid()                    
+        self.grid()             
         self.createWidgets()
     def createWidgets(self):
         self.quitButton = tk.Button(self, text='Abandon Ship',command=self.quit)            
